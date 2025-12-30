@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tunnel-client"
+version = "0.1.0"
+description = "Tunnel client with GUI for connecting to tunnel server"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "customtkinter>=5.2.0",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[project.scripts]
+tunnel-client = "client_app.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["client_app*"]
+

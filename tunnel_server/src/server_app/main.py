@@ -9,25 +9,45 @@ from typing import Optional
 
 # Add src directory to path for direct execution
 # This allows running the script directly: python main.py
+# Also works when imported as a module
 _file_path = Path(__file__).resolve()
 _src_path = _file_path.parent.parent.parent
 if str(_src_path) not in sys.path:
     sys.path.insert(0, str(_src_path))
 
 # Use absolute imports after adding src to path
-from server_app.presentation.cli import parse_args
-from server_app.infrastructure.logging.logging_adapter import setup_logging
-from server_app.infrastructure.network.asyncio_control_server import AsyncioControlServer
-from server_app.infrastructure.network.asyncio_public_listener import AsyncioPublicListenerFactory
-from server_app.infrastructure.allocators.range_port_allocator import RangePortAllocator
-from server_app.infrastructure.persistence.in_memory_registry import InMemoryAgentRegistry
-from server_app.application.usecases.register_agent_usecase import RegisterAgentUseCase
-from server_app.application.usecases.open_external_connection_usecase import OpenExternalConnectionUseCase
-from server_app.application.usecases.relay_data_usecase import RelayDataUseCase
-from server_app.application.usecases.close_connection_usecase import CloseConnectionUseCase
-from server_app.common.protocol import ProtocolCodec
-from server_app.common.framing import HELLO, DATA, CLOSE
-from server_app.common.errors import AuthenticationError, ProtocolError
+# Try relative import first (when imported as module), then absolute
+try:
+    from .presentation.cli import parse_args
+except ImportError:
+    from server_app.presentation.cli import parse_args
+# Try relative imports first, then absolute
+try:
+    from ..infrastructure.logging.logging_adapter import setup_logging
+    from ..infrastructure.network.asyncio_control_server import AsyncioControlServer
+    from ..infrastructure.network.asyncio_public_listener import AsyncioPublicListenerFactory
+    from ..infrastructure.allocators.range_port_allocator import RangePortAllocator
+    from ..infrastructure.persistence.in_memory_registry import InMemoryAgentRegistry
+    from ..application.usecases.register_agent_usecase import RegisterAgentUseCase
+    from ..application.usecases.open_external_connection_usecase import OpenExternalConnectionUseCase
+    from ..application.usecases.relay_data_usecase import RelayDataUseCase
+    from ..application.usecases.close_connection_usecase import CloseConnectionUseCase
+    from ..common.protocol import ProtocolCodec
+    from ..common.framing import HELLO, DATA, CLOSE
+    from ..common.errors import AuthenticationError, ProtocolError
+except ImportError:
+    from server_app.infrastructure.logging.logging_adapter import setup_logging
+    from server_app.infrastructure.network.asyncio_control_server import AsyncioControlServer
+    from server_app.infrastructure.network.asyncio_public_listener import AsyncioPublicListenerFactory
+    from server_app.infrastructure.allocators.range_port_allocator import RangePortAllocator
+    from server_app.infrastructure.persistence.in_memory_registry import InMemoryAgentRegistry
+    from server_app.application.usecases.register_agent_usecase import RegisterAgentUseCase
+    from server_app.application.usecases.open_external_connection_usecase import OpenExternalConnectionUseCase
+    from server_app.application.usecases.relay_data_usecase import RelayDataUseCase
+    from server_app.application.usecases.close_connection_usecase import CloseConnectionUseCase
+    from server_app.common.protocol import ProtocolCodec
+    from server_app.common.framing import HELLO, DATA, CLOSE
+    from server_app.common.errors import AuthenticationError, ProtocolError
 
 logger = logging.getLogger(__name__)
 

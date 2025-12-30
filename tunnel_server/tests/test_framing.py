@@ -10,8 +10,9 @@ def test_encode_decode():
     decoder = FrameDecoder()
     
     # Test HELLO message
-    frame = encoder.encode(HELLO, 0, b"test payload")
-    assert len(frame) == 9 + 11  # header + payload
+    payload = b"test payload"
+    frame = encoder.encode(HELLO, 0, payload)
+    assert len(frame) == 9 + len(payload)  # header (9 bytes) + payload
     
     decoder.feed(frame)
     result = decoder.decode()
